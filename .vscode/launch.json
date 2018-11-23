@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch index.js via nodemon",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "~/.nvm/versions/node/v10.13.0/bin/npm",
+            "runtimeArgs": ["run-script", "debug"],
+            "program": "${workspaceFolder}/index.js",
+            "restart": true,
+            "port": 9229,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+    ]
+}
