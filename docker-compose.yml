@@ -3,18 +3,32 @@ version: '2'
 services:
   api:
     build: .
+    restart: "unless-stopped"
     command: "npm run docker:app"
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
     ports:
       - "8989:8989"
+    depends_on:
+      - db
 
   api-debug:
     build: .
+    restart: "unless-stopped"
     command: "npm run docker:debug"
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
     ports:
       - "9229:9229"
+    depends_on:
+      - db
+
+  db:
+    image: mongo
+    restart: "unless-stopped"
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
