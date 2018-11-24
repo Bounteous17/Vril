@@ -1,9 +1,11 @@
-mongodb:  
-  image: mongo:3.6.6-jessie
-  ports:
-    - "27017:27017"   
+version: '2'
 
-rediscache:  
-  image: redis:latest
-  ports:
-    - "6379:6379" 
+services:
+  api:
+    build: .
+    command: npm run debug
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - "3000:8989"
