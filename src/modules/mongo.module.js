@@ -3,16 +3,21 @@ const mongoose = require('mongoose');
 const vrilConfig = require('../../config/config');
 mongoose.Promise = require('bluebird');
 
+const dbUri = 'mongodb://'
+    + vrilConfig().mongo.host 
+    + vrilConfig().mongo.port
+    + vrilConfig().mongo.db;
+
 // Create the database connection
 mongoose.connect(
-    vrilConfig().mongo.dbUri,
+    dbUri,
     { useNewUrlParser: true },
 );
 
 // CONNECTION EVENTS
 // When successfully connected
 mongoose.connection.on('connected', () => {
-    debug('Mongoose default connection open to ' + vrilConfig().mongo.dbUri);
+    debug('Mongoose default connection open to ' + dbUri);
 });
 
 // If the connection throws an error

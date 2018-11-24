@@ -9,6 +9,14 @@ services:
     volumes:
       - /data/db-dev
 
+  redis:
+    container_name: redis-vril-dev
+    image: redis:5.0.1-stretch
+    ports:
+      - "5003:6379"
+    volumes:
+      - /data/cc-dev
+
   swagger:
     container_name: swagger-vril-dev
     image: swaggerapi/swagger-ui
