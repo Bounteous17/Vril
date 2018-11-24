@@ -4,13 +4,12 @@
   "description": "A new concept API for Rootkits detections",
   "main": "index.js",
   "scripts": {
+    "docker:dev": "docker-compose -f docker-compose-debug.yml up",
+    "docker:prod": "docker-compose up -d",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "debug": "DEBUG=Vril:* nodemon --nolazy --inspect-brk=9229 index.js",
-    "docker:app": "nodemon index.js",
-    "docker:debug": "DEBUG=Vril:* nodemon --nolazy --inspect-brk=0.0.0.0 index.js",
-
-    "docker:prod": ""
-  },
+    "prod": "node index.js",
+    "debug": "DEBUG=Vril:* nodemon --inspect=0.0.0.0:5858 index.js"
+    },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bounteous/Vril.git"

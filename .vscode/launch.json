@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch index.js via nodemon",
+            "name": "Host Nodemon",
             "type": "node",
             "request": "launch",
             // "runtimeExecutable": "~/.nvm/versions/node/v10.13.0/bin/npm",
@@ -10,21 +10,9 @@
             "runtimeArgs": ["run-script", "debug"],
             "program": "${workspaceFolder}/index.js",
             "restart": true,
-            "port": 9229,
+            "port": 5858,
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
-        },
-        {
-            "name": "Attach to Docker",
-            "type": "node",
-            "request": "attach",
-            "port": 9229,
-            "address": "127.0.0.1",
-            "restart": true,
-            "sourceMaps": false,
-            "localRoot": "${workspaceRoot}",
-            "remoteRoot": "/usr/app",
-            "protocol": "inspector"
         }
     ]
 }

@@ -1,11 +1,7 @@
 FROM node:10.13.0
 
-WORKDIR /usr/app
+RUN mkdir /app
+WORKDIR /app
+COPY package.json /app/
 
-COPY package.json .
-RUN npm install --quiet
-
-COPY . .
-
-EXPOSE 8989
-CMD ["node", "index.js"]
+RUN npm i

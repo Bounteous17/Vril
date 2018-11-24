@@ -1,5 +1,5 @@
 const __server = {
-    "port": 8989,
+    "port": 5000,
     "host": "0.0.0.0"
 }
 
@@ -8,7 +8,7 @@ const __auth = {
 }
 
 const __mongo = {
-    dbUri: 'mongodb://localhost:27017/vril',
+    dbUri: 'mongodb://localhost:5002/vril',
 }
 
 module.exports = () => {

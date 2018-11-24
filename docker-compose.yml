@@ -1,41 +1,28 @@
 version: '2'
 
 services:
-  api:
-    build: .
-    restart: "unless-stopped"
-    command: "npm run docker:app"
-    volumes:
-      - .:/usr/app/
-      - /usr/app/node_modules
-    ports:
-      - "8989:8989"
-    depends_on:
-      - db
-
   api-debug:
     build: .
-    restart: "unless-stopped"
-    command: "npm run docker:debug"
+    command: "npm run prod"
     volumes:
-      - .:/usr/app/
-      - /usr/app/node_modules
+      - ./:/app
+      - /app/node_modules
     ports:
-      - "9229:9229"
-    depends_on:
-      - db
+      - "5000:5000"
+    links:
+      - mongo
 
-  db:
-    image: mongo:3.6.6-jessie
-    restart: "unless-stopped"
-    volumes:
-      - ./data:/data/db
+  mongo:
+    container_name: mongo-vril-prod
+    image: mongo:3.6.9-stretch
     ports:
-      - "27017:27017"
+      - '5002:27017'
+    volumes:
+      - /data/db-prod
 
   swagger:
+    container_name: swagger-vril-prod
     image: swaggerapi/swagger-ui
-    restart: "unless-stopped"
     ports:
       - "5001:8080"
     environment:
