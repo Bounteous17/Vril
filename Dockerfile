@@ -8,4 +8,4 @@ RUN npm install --quiet
 COPY . .
 
 EXPOSE 8989
-CMD ["node", "."]
+CMD ["node", "index.js"]

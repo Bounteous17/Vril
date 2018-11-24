@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "debug": "DEBUG=Vril:* nodemon --nolazy --inspect-brk=9229 index.js"
+    "debug": "DEBUG=Vril:* nodemon --nolazy --inspect-brk=9229 index.js",
+    "docker:app": "nodemon index.js",
+    "docker:debug": "DEBUG=Vril:* nodemon --nolazy --inspect-brk=0.0.0.0 index.js",
+
+    "docker:prod": ""
   },
   "repository": {
     "type": "git",

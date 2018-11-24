@@ -3,13 +3,18 @@ version: '2'
 services:
   api:
     build: .
-    command: 
-      - node
-      - "--inspect-brk=0.0.0.0"
-      - "."
+    command: "npm run docker:app"
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
     ports:
-      - "3000:8989"
+      - "8989:8989"
+
+  api-debug:
+    build: .
+    command: "npm run docker:debug"
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    ports:
       - "9229:9229"

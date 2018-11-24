@@ -1,6 +1,6 @@
 const __server = {
     "port": 8989,
-    "host": "127.0.0.1"
+    "host": "0.0.0.0"
 }
 
 const __auth = {
