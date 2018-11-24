@@ -3,9 +3,13 @@ version: '2'
 services:
   api:
     build: .
-    command: npm run debug
+    command: 
+      - node
+      - "--inspect-brk=0.0.0.0"
+      - "."
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
     ports:
       - "3000:8989"
+      - "9229:9229"
