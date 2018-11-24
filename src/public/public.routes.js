@@ -15,4 +15,20 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.post('/login', async (req, res) => {
+    try {
+        const email = sanitize(req.body.email);
+        const password = sanitize(req.body.password);
+        const login = await publicModule().login(email, password);
+        if (login.error) {
+            res.status(403);
+        }
+        res.send(login.message);
+    } catch (error) {
+        debug(error);
+        res.status(500);
+        res.send({status: 'failed'});
+    }
+});
+
 module.exports = router;
