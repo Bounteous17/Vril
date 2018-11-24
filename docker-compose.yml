@@ -26,7 +26,7 @@ services:
       - db
 
   db:
-    image: mongo
+    image: mongo:3.6.6-jessie
     restart: "unless-stopped"
     volumes:
       - ./data:/data/db
