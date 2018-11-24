@@ -2,7 +2,7 @@ const debug = require('debug')('Vril:UsersModule');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const vrilConfig = require('../../config/config');
-const User = require('./user.schema');
+const User = require('../models/user.schema');
 
 const __create = async (name, email, password) => {
     try {
@@ -16,7 +16,7 @@ const __create = async (name, email, password) => {
         return {
             error: false,
             message: 'New user created'
-        }   
+        }
     } catch (error) {
         debug(error);
         return {
