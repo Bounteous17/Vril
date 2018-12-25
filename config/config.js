@@ -14,13 +14,13 @@ const __tokens = {
 }
 
 const __mongo = {
-    host: 'swagger-vril-dev',
+    host: 'mongo-vril',
     port: ':5002',
     db: '/vril'
 }
 
 const __redis = {
-    host: 'redis-vril-dev',
+    host: 'redis-vril',
     port: 5003
 }
 

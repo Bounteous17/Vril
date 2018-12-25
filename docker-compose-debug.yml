@@ -2,16 +2,16 @@ version: '2'
 
 services:
   mongo:
-    container_name: mongo-vril-dev
-    image: mongo:3.6.6-jessie
+    container_name: mongo-vril
+    image: mongo:3.6.9-stretch
     ports:
       - "5002:27017"
     volumes:
       - /data/db-dev
 
   redis:
-    container_name: redis-vril-dev
-    image: redis:5.0.1-stretch
+    container_name: redis-vril
+    image: redis:5.0.2-stretch
     ports:
       - "5003:6379"
     volumes:
