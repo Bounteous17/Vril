@@ -29,5 +29,5 @@ app.use('/users', usersRoutes);
 const port = vrilConfig().server.port;
 const host = vrilConfig().server.host;
 app.listen(port, host, async () => {
-    console.log('Vril API Server running on port:', port);
+    debug('Vril API Server running on port:', port);
 }); 

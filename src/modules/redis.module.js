@@ -1,3 +1,4 @@
+const debug = require('debug')('Vril:RedisCC');
 const redis = require("async-redis");
 const vrilConfig = require('../../config/config');
 
@@ -6,8 +7,12 @@ const __client = redis.createClient({
     port: vrilConfig().redis.port
 });
 
-__client.on("error", (err) => {
-    console.log("Error " + err);
+__client.on('connect', () => {
+    debug('Redis client connected');
+});
+
+__client.on('error', (err) => {
+    debug("Error " + err);
 });
 
 module.exports = () => {
