@@ -1,3 +1,12 @@
+const passwdGen = require('generate-password');
+
+const __passwdGen = () => {
+  return generator.generate({
+    length: 30,
+    numbers: true
+  });
+}
+
 const __resStatGen = reply => {
   let status = 200;
   let body = reply;
@@ -15,7 +24,7 @@ const __resStatGen = reply => {
 
 const __fieldsCheck = (fields, fieldsParams) => {
   for (let field of fields) {
-    if (field === undefined) {
+    if (!field || field == "" || field === undefined) {
       return {
         error: true,
         status: 404,
@@ -30,6 +39,7 @@ const __fieldsCheck = (fields, fieldsParams) => {
 module.exports = () => {
   return {
     resStatGen: __resStatGen,
-    fieldsCheck: __fieldsCheck
+    fieldsCheck: __fieldsCheck,
+    passwdGen: __passwdGen
   };
 };
