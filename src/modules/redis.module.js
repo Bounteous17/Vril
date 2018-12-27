@@ -1,10 +1,10 @@
 const debug = require('debug')('Vril:RedisCC');
 const redis = require("async-redis");
-const vrilConfig = require('../../config/config');
+const VrilConfig = require('../../config/config')();
 
 const __client = redis.createClient({
-    host: vrilConfig().redis.host,
-    port: vrilConfig().redis.port
+    host: VrilConfig.redis.host,
+    port: VrilConfig.redis.port
 });
 
 __client.on('connect', () => {

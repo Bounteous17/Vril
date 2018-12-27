@@ -1,12 +1,12 @@
 const debug = require('debug')('Vril:MongoDB');
 const mongoose = require('mongoose');
-const vrilConfig = require('../../config/config');
+const VrilConfig = require('../../config/config')();
 mongoose.Promise = require('bluebird');
 
 const dbUri = 'mongodb://'
-    + vrilConfig().mongo.host 
-    + vrilConfig().mongo.port
-    + vrilConfig().mongo.db;
+    + VrilConfig.mongo.host
+    + VrilConfig.mongo.port
+    + VrilConfig.mongo.db;
 
 // Create the database connection
 mongoose.connect(
@@ -21,19 +21,21 @@ mongoose.connection.on('connected', () => {
 });
 
 // If the connection throws an error
-mongoose.connection.on('error', function(err) {
+mongoose.connection.on('error', (err) => {
     debug('Mongoose default connection error: ' + err);
 });
 
 // When the connection is disconnected
-mongoose.connection.on('disconnected', function() {
+mongoose.connection.on('disconnected', () => {
     debug('Mongoose default connection disconnected');
 });
 
 // If the Node process ends, close the Mongoose connection
-process.on('SIGINT', function() {
-  mongoose.connection.close(function() {
-    debug('Mongoose default connection disconnected through app termination');
-    process.exit(0);
-  });
+process.on('SIGINT', () => {
+    mongoose.connection.close(() => {
+        debug('Mongoose default connection disconnected through app termination');
+        process.exit(0);
+    });
 });
+
+require('../models/user.schema');
