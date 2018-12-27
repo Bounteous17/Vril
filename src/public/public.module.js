@@ -24,6 +24,33 @@ const __findUser = async (username, values) => {
   }).select(values);
 }
 
+const __create = async (full_name, username, email, power, password) => {
+  try {
+    let sUser = await __findUser(username);
+    if (sUser) {
+      return __moduleSettings().userExists;
+    }
+
+    newUser = new User({
+      full_name: full_name,
+      username: username,
+      email: email,
+      power: power,
+      password: password
+    });
+    await newUser.save();
+    debug('User registration success with pasword');
+
+    return newUser
+  } catch (error) {
+    debug('Error into __create: %o', error);
+    return {
+      errorCode: 500,
+      message: 'Internal server error creating user',
+    };
+  }
+};
+
 const __login = async (username, password) => {
   try {
     let sUser = await __findUser(username);
@@ -46,10 +73,10 @@ const __login = async (username, password) => {
       token: token
     };
   } catch (error) {
-    debug(error);
+    debug('Error into __login: %o', error);
     return {
       errorCode: 500,
-      message: "Error auth"
+      message: "Internal server error during login the user"
     };
   }
 };
@@ -76,7 +103,7 @@ const __generateJwt = async user => {
 module.exports = () => {
   return {
     status: __status,
-    signup: __signup,
-    login: __login
+    login: __login,
+    create: __create
   };
 };
