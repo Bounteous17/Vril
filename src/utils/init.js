@@ -27,14 +27,24 @@ const __createAdminUser = async () => {
 }
 
 const __findAdminUser = async (action) => {
-    let sUser = await User.find(
-        { power: 0 }
-    )
-    if (action === 'create' && !sUser[0]) {
-        let adminUser = await __createAdminUser()
-        debug('Default Administrator user created success: %o', adminUser);
+    try {
+        let sUser = await User.find(
+            { power: 0 }
+        )
+        if (action === 'create' && !sUser[0]) {
+            let adminUser = await __createAdminUser()
+            debug('Default Administrator user created success: %o', adminUser);
+        } else {
+            debug('Admin user already exists');
+        }
+        return sUser
+    } catch (error) {
+        debug('Error inti __findAdminUser: %o', error);
+        return {
+            errorCode: 500,
+            message: "Error auth"
+        };
     }
-    return sUser
 }
 
 module.exports = () => {
