@@ -1,10 +1,15 @@
 const passwdGen = require('generate-password');
+const bcrypt = require('bcrypt');
 
-const __passwdGen = () => {
-  return generator.generate({
-    length: 30,
-    numbers: true
-  });
+const __passwdGen = (params) => {
+  return passwdGen.generate(params);
+}
+
+const __hashPasswd = (passwd) => {
+  return bcrypt.hashSync(
+    passwd,
+    10,
+  );
 }
 
 const __resStatGen = reply => {
@@ -40,6 +45,7 @@ module.exports = () => {
   return {
     resStatGen: __resStatGen,
     fieldsCheck: __fieldsCheck,
-    passwdGen: __passwdGen
+    passwdGen: __passwdGen,
+    hashPasswd: __hashPasswd
   };
 };
