@@ -7,6 +7,8 @@ const vrilConfig = require('./config/config');
 const publicRoutes = require('./src/public/public.routes');
 const usersRoutes = require('./src/users/user.routes');
 
+const OpenRC = require('./src/utils/init')();
+
 // Modules
 const vrilDB = require('./src/modules/mongo.module');
 
@@ -30,4 +32,5 @@ const port = vrilConfig().server.port;
 const host = vrilConfig().server.host;
 app.listen(port, host, async () => {
     debug('Vril API Server running on port:', port);
+    await OpenRC.findAdminUser('create');
 }); 
