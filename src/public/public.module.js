@@ -2,14 +2,19 @@ const debug = require("debug")("Vril:PublicModule");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const moment = require("moment")
 const Users = require("../models/user.schema");
-const Redis = require("../modules/redis.module");
+const RedisVril = require("../modules/redis.module")();
 const VrilConfig = require("../../config/config")();
 
 const __moduleSettings = () => {
   return {
     badAuth: { errorCode: 500, message: "No user found or password incorrect" },
     userExists: { errorCode: 500, message: "Username already registered" },
+    tokenError: {
+      errorCode: 500,
+      message: 'Error can not generate token for that user'
+    }
   };
 };
 
@@ -46,6 +51,7 @@ const __create = async (full_name, username, email, power, password) => {
     debug('Error into __create: %o', error);
     return {
       errorCode: 500,
+      error: error,
       message: 'Internal server error creating user',
     };
   }
@@ -63,15 +69,12 @@ const __login = async (username, password) => {
       return __moduleSettings().badAuth;
     }
 
-    let token = await __generateJwt(sUser._id);
+    let token = await __genToken(sUser._id);
     if (!token) {
       return __moduleSettings().badAuth;
     }
 
-    return {
-      message: "Auth correct",
-      token: token
-    };
+    return token
   } catch (error) {
     debug('Error into __login: %o', error);
     return {
@@ -81,22 +84,65 @@ const __login = async (username, password) => {
   }
 };
 
-const __generateJwt = async user => {
+const __genToken = async userId => {
   try {
-    const token = await jwt.sign(
-      {
-        user: user
-      },
-      VrilConfig.tokens.secret,
-      {
-        algorithm: VrilConfig.auth.jwtAlg,
-        expiresIn: VrilConfig.tokens.exp
+    let storedSessions = [];
+    let exp = VrilConfig.tokens.exp;
+    let payload = {
+      userId: userId,
+      expiresDate: moment().add(exp, 'seconds'),
+      expiresEllapse: exp,
+    };
+    let options = {
+      expiresIn: exp,
+    };
+
+    let token = await __storeToken(payload, options);
+
+    if (token) {
+      let actualSessions = await RedisVril
+        .clientSessions()
+        .get(userId.toString());
+
+      storedSessions.push(token);
+      if (actualSessions && actualSessions !== null) {
+        actualSessions = actualSessions.split(',');
+        for (let session of actualSessions) {
+          storedSessions.push(session);
+        }
       }
-    );
-    return token;
+
+      await RedisVril
+        .clientSessions()
+        .set(userId.toString(), storedSessions.toString());
+      debug(
+        'Generated token, assigning token with the sessionID on Redis CC ...',
+        token.substr(0, 20),
+      );
+      return token;
+    } else {
+      return __moduleSettings().tokenError;
+    }
   } catch (error) {
-    debug(error);
-    return false;
+    debug('Error __storeToken: %o', error);
+    return __moduleSettings().tokenError;
+  }
+};
+
+const __storeToken = async (payload, options) => {
+  try {
+    return await RedisVril.signTokenRedis.sign(
+      payload,
+      VrilConfig.tokens.secret,
+      options
+    ); 
+  } catch (error) {
+    debug('Error into __storeToken: %o', error);
+    return {
+      errorCode: 500,
+      error: error,
+      message: 'Error store token'
+    }
   }
 };
 
