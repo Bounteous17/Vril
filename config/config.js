@@ -9,7 +9,7 @@ const __auth = {
 }
 
 const __tokens = {
-    exp: '1h',
+    exp: 6720, // seconds
     secret: 'keyboard cat'
 }
 
@@ -19,9 +19,17 @@ const __mongo = {
     db: '/vril'
 }
 
+const __redisDBs = {
+    sessions: 0,
+    jwtr: 1
+}
+
 const __redis = {
     host: 'redis-vril',
-    port: 5003
+    port: 5003,
+    maxRetries: 10,
+    secret: 'shhhhh',
+    client: __redisDBs
 }
 
 const __adminDefault = {

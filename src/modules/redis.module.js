@@ -2,21 +2,32 @@ const debug = require('debug')('Vril:RedisCC');
 const redis = require("async-redis");
 const VrilConfig = require('../../config/config')();
 
-const __client = redis.createClient({
+let mainConstr = {
     host: VrilConfig.redis.host,
-    port: VrilConfig.redis.port
-});
+    port: VrilConfig.redis.port,
+    maxretries: VrilConfig.redis.maxRetries,
+    secret: VrilConfig.redis.secret,
+};
 
-__client.on('connect', () => {
-    debug('Redis client connected');
-});
+const __listInstances = (instanceObj, instance) => {
+    instanceObj.on('error', err => {
+        debug('Could not establish a connection with redis DB ->', instance + err);
+    });
 
-__client.on('error', (err) => {
-    debug("Error " + err);
-});
+    instanceObj.on('connect', succ => {
+        debug('Redis client connected successfully to DB ->', instance);
+    });
+};
+
+const __clientSessions = () => {
+    let __sessionsDB = mainConstr;
+    __sessionsDB['db'] = VrilConfig.redis.client.jwtr;
+    return redis.createClient(__sessionsDB);
+};
 
 module.exports = () => {
     return {
-        client: __client
+        clientSessions: __clientSessions,
+        listInstances: __listInstances
     }
 }
