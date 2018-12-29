@@ -28,9 +28,10 @@ app.use('/', publicRoutes);
 app.use('/users', usersRoutes);
 
 // Create express server
-const port = vrilConfig().server.port;
-const host = vrilConfig().server.host;
+let port = vrilConfig().server.port;
+let host = vrilConfig().server.host;
 app.listen(port, host, async () => {
     debug('Vril API Server running on port:', port);
     await OpenRC.findAdminUser('create');
+    OpenRC.instanciateRedisDBs();
 }); 

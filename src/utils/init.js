@@ -52,6 +52,7 @@ const __findAdminUser = async (action) => {
 
 const __instanciateRedisDBs = () => {
     RedisVril.listInstances(RedisVril.clientSessions(), 'Sessions');
+    RedisVril.listInstances(RedisVril.clientTokens(), 'Tokens JWTR');
 }
 
 module.exports = () => {

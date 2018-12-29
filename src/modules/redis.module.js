@@ -21,13 +21,20 @@ const __listInstances = (instanceObj, instance) => {
 
 const __clientSessions = () => {
     let __sessionsDB = mainConstr;
-    __sessionsDB['db'] = VrilConfig.redis.client.jwtr;
+    __sessionsDB['db'] = VrilConfig.redis.client.sessions;
     return redis.createClient(__sessionsDB);
+};
+
+const __clientTokens = () => {
+    let __tokensDB = mainConstr;
+    __tokensDB['db'] = VrilConfig.redis.client.jwtr;
+    return redis.createClient(__tokensDB);
 };
 
 module.exports = () => {
     return {
         clientSessions: __clientSessions,
+        clientTokens: __clientTokens,
         listInstances: __listInstances
     }
 }
