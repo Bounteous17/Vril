@@ -1,6 +1,8 @@
 const debug = require('debug')('Vril:RedisCC');
 const redis = require("async-redis");
+const IOredis = require('ioredis');
 const VrilConfig = require('../../config/config')();
+const JWTR = require('jwt-redis');
 
 let mainConstr = {
     host: VrilConfig.redis.host,
@@ -28,13 +30,16 @@ const __clientSessions = () => {
 const __clientTokens = () => {
     let __tokensDB = mainConstr;
     __tokensDB['db'] = VrilConfig.redis.client.jwtr;
-    return redis.createClient(__tokensDB);
+    return new IOredis(__tokensDB);
 };
+
+const __signTokenRedis = new JWTR(__clientTokens());
 
 module.exports = () => {
     return {
         clientSessions: __clientSessions,
         clientTokens: __clientTokens,
-        listInstances: __listInstances
+        signTokenRedis: __signTokenRedis,
+        listInstances: __listInstances,
     }
 }

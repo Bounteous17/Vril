@@ -33,7 +33,11 @@
     "debug": "^4.1.1",
     "express": "^4.16.4",
     "generate-password": "^1.4.1",
+    "ioredis": "^4.3.0",
     "jsonwebtoken": "^8.4.0",
+    "jwt-decode": "^2.2.0",
+    "jwt-redis": "^3.1.0",
+    "moment": "^2.23.0",
     "mongo-sanitize": "^1.0.1",
     "mongoose": "^5.4.1"
   },
