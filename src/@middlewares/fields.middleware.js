@@ -12,10 +12,10 @@ module.exports = (resource) => {
         [req.body.Username, req.body.Password],
         "user and password"
       );
-    } else if (resource === 'signup') {
+    } else if (resource === 'create') {
       validFields = Helpers.fieldsCheck(
-        [req.body.Username, req.body.Password, req.body.Mail],
-        "user, password and email"
+        [req.body.FullName, req.body.Username, req.body.Mail, req.body.Power, req.body.Password],
+        "full name, user, email, power and password"
       );
     } else {
       debug('Error on __fieldsValidator: %o', new Error('Not a valid resource'))

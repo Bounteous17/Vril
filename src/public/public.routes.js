@@ -17,6 +17,25 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.post("/create", FieldsValid('create'), async (req, res) => {
+    try {
+        let full_name = sanitize(req.body.FullName);
+        let username = sanitize(req.body.Username);
+        let email = sanitize(req.body.Mail);
+        let power = sanitize(req.body.Power);
+        let password = sanitize(req.body.Password);
+        let resSignup = await PublicModule.create(full_name, username, email, power, password);
+        let { status, body } = Helpers.resStatGen(resSignup);
+        res.status(status);
+        res.send(body);
+        return;
+    } catch (error) {
+        debug('Error into /user/signup: %o', error);
+        res.status(500);
+        res.send("Signup server error");
+    }
+});
+
 router.post("/login", FieldsValid('login'), async (req, res) => {
     try {
         let username = sanitize(req.body.Username);
