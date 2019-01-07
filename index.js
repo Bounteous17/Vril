@@ -2,15 +2,17 @@ const debug = require('debug')('Vril:Index');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const vrilConfig = require('./config/config');
+const vrilConfig = require('./config/config')();
 
 const publicRoutes = require('./src/public/public.routes');
 const usersRoutes = require('./src/users/user.routes');
 
+const timeLogger = require('./src/@middlewares/timeLogger');
+
 const OpenRC = require('./src/utils/init')();
 
 // Modules
-const vrilDB = require('./src/modules/mongo.module');
+require('./src/modules/mongo.module');
 
 app.use(bodyParser.json());
 
@@ -22,14 +24,15 @@ app.use((req, res, next) => {
     next();
 })
 
+app.use(timeLogger);
 // Public Routes
 app.use('/', publicRoutes);
 // Protected routes
 app.use('/users', usersRoutes);
 
 // Create express server
-let port = vrilConfig().server.port;
-let host = vrilConfig().server.host;
+let port = vrilConfig.server.port;
+let host = vrilConfig.server.host;
 app.listen(port, host, async () => {
     debug('Vril API Server running on port:', port);
     await OpenRC.findAdminUser('create');

@@ -48,6 +48,13 @@ const __users = {
     __adminDefault
 }
 
+const __log = {
+    path: '/var/log/vril/',
+    access: 'access.log',
+    error: 'error.log',
+    info: 'info.log'
+}
+
 module.exports = () => {
     return {
         server: __server,
@@ -55,6 +62,7 @@ module.exports = () => {
         mongo: __mongo,
         redis: __redis,
         tokens: __tokens,
-        users: __users
+        users: __users,
+        log: __log
     }
 }
