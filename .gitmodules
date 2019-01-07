@@ -1,0 +1,3 @@
+[submodule "Vril-Installer"]
+	path = Vril-Installer
+	url = git@github.com:bounteous/Vril-Installer.git
